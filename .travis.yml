@@ -24,6 +24,6 @@ script:
   - ls
   - cd bin
   - ls
-  - sudo chmod 777 pass
-  - ./pass
+  - sudo chmod 777 docker-credential-pass
+  - ./docker-credential-pass
   
