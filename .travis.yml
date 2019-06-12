@@ -1,4 +1,16 @@
-dist: trusty
+matrix:
+  include:
+    - env: version=0.6.0
+    - env: version=0.5.2
+    - env: version=0.5.1
+    - env: version=0.5.0
+    - env: version=0.4.2
+    - env: version=0.4.1
+    - env: version=0.4.0
+    - env: version=0.3.0
+    - env: version=0.2.0
+    - env: version=0.1.0
+
 os: linux-ppc64le
 sudo: required
 language: go
@@ -14,16 +26,15 @@ script:
   - cd $GOPATH/src/github.com
   - mkdir docker
   - cd docker
-  - wget https://github.com/docker/docker-credential-helpers/archive/v0.6.2.zip
-  - unzip v0.6.2.zip
-  - mv docker-credential-helpers-0.6.2 docker-credential-helpers
+  - wget https://github.com/docker/docker-credential-helpers/archive/v$version.zip
+  - unzip v$version.zip
+  - mv docker-credential-helpers-$version docker-credential-helpers
   - cd docker-credential-helpers
   - make secretservice
   - make pass
-  
-  - ls
   - cd bin
-  - ls
-  - sudo chmod 777 docker-credential-pass
-  - ./docker-credential-pass
   
+  - lftp -c "open -u $USER,$PASS ftp://oplab9.parqtec.unicamp.br; cd /ppc64el/docker-credential-helpers; mkdir docker-credential-helpers-$version"     
+  - lftp -c "open -u $USER,$PASS ftp://oplab9.parqtec.unicamp.br; put -O /ppc64el/docker-credential-helpers/docker-credential-helpers-$version docker-credential-pass"
+  - lftp -c "open -u $USER,$PASS ftp://oplab9.parqtec.unicamp.br; put -O /ppc64el/docker-credential-helpers/docker-credential-helpers-$version docker-credential-secretservice"
+   
