@@ -23,6 +23,7 @@ addons:
       - pass
         
 script:
+  - sudo apt install -y lftp
   - cd $GOPATH/src/github.com
   - mkdir docker
   - cd docker
